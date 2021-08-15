@@ -78,7 +78,7 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
             )}
             {searchType == SearchType.Country && (
               <Select value={country} onChange={(e) => setCountry(e.target.value)}>
-                <option value='poland'>Poland</option>
+                <option value='Canadian'>Canadian</option>
                 <option value='england'>England</option>
                 <option value='france'>France</option>
               </Select>

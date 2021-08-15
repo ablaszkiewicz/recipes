@@ -1,7 +1,9 @@
 import { Heading, Avatar, Box, Center, Text, Stack, Button, Link, Badge, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/dist/client/router';
+import { useAppSelector } from '../hooks';
 import { Recipe } from './Interfaces/Types';
+import { selectLikedRecipes } from './redux/recipeRatingSlice';
 
 interface CardProps {
   recipe: Recipe;
@@ -9,6 +11,7 @@ interface CardProps {
 
 export default function Card({ recipe }: CardProps) {
   const router = useRouter();
+  const likedIds = useAppSelector(selectLikedRecipes);
 
   const itemVariants = {
     hidden: { opacity: 0, y: 40 },
@@ -42,6 +45,12 @@ export default function Card({ recipe }: CardProps) {
           cursor={'pointer'}
         >
           <Avatar size={'xl'} src={recipe.strMealThumb} alt={'Avatar Alt'} mb={4} pos={'relative'} />
+          {likedIds.includes(+recipe.idMeal) && (
+            <Badge rounded='full' px='2' fontSize='0.8em' colorScheme='red' position='absolute'>
+              Liked
+            </Badge>
+          )}
+
           <Heading fontSize={'3xl'} fontFamily={'body'} noOfLines={1}>
             {recipe.strMeal}
           </Heading>

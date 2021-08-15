@@ -7,7 +7,6 @@ import {
   GridItem,
   HStack,
   Image,
-  ListItem,
   SimpleGrid,
   Text,
   UnorderedList,
@@ -15,15 +14,20 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { AnimateSharedLayout, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Recipe } from '../../src/Interfaces/Types';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { addLikedRecipe, removeLikedRecipe, selectLikedRecipes } from '../../src/redux/recipeRatingSlice';
 
 export default function Product() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { id } = router.query;
   const [liked, setLiked] = useState<boolean>(false);
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [ingredients, setIngredients] = useState<string[] | undefined>();
+  const [tags, setTags] = useState<string[] | undefined>();
+  const likedIds = useAppSelector(selectLikedRecipes);
 
   useEffect(() => {
     console.log('id is ' + id);
@@ -45,11 +49,25 @@ export default function Product() {
       else ingredientsTemp.push(ingredient);
     }
 
+    if (recipeTemp.strTags) {
+      setTags(recipeTemp.strTags.split(','));
+    }
+
     console.log(ingredientsTemp);
 
     setRecipe(recipeTemp);
     setIngredients(ingredientsTemp);
+    setLiked(likedIds.includes(+recipeTemp.idMeal));
   }
+
+  const likeClicked = () => {
+    setLiked(!liked);
+    if (recipe && !liked) {
+      dispatch(addLikedRecipe(+recipe.idMeal));
+    } else if (recipe && liked) {
+      dispatch(removeLikedRecipe(+recipe.idMeal));
+    }
+  };
 
   return (
     <motion.div
@@ -92,19 +110,27 @@ export default function Product() {
                   </Text>
                 </motion.div>
 
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ ease: 'easeOut', duration: 0.3, delay: 0.1 }}
-                >
-                  <Text fontSize='lg'>TAGS</Text>
-                </motion.div>
+                {tags && (
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ ease: 'easeOut', duration: 0.3, delay: 0.1 }}
+                  >
+                    {tags.map((tag) => (
+                      <Badge fontSize='lg' px='2' mx='4'>
+                        #{tag}
+                      </Badge>
+                    ))}
+                  </motion.div>
+                )}
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ ease: 'easeOut', duration: 0.3, delay: 0.2 }}
                 >
-                  <Badge fontSize='md'>#{recipe?.strCategory}</Badge>
+                  <Text fontSize='xl' fontWeight='bold'>
+                    {recipe?.strCategory}
+                  </Text>
                 </motion.div>
                 <HStack>
                   <motion.div
@@ -133,13 +159,7 @@ export default function Product() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ ease: 'easeOut', duration: 0.3, delay: 0.4 }}
                   >
-                    <Button
-                      onClick={() => {
-                        setLiked(!liked);
-                      }}
-                      mx={'5'}
-                      size='lg'
-                    >
+                    <Button onClick={() => likeClicked()} mx={'5'} size='lg'>
                       <motion.div key={liked ? 1 : 0} initial={{ y: 20 }} animate={{ y: 0 }}>
                         {liked ? 'Unlike' : 'Like'}
                       </motion.div>
@@ -159,7 +179,7 @@ export default function Product() {
                 </Text>
                 <UnorderedList>
                   {ingredients?.map((ingredient) => (
-                    <Badge fontSize='lg' m='2'>
+                    <Badge fontSize='lg' m='2' px='2'>
                       {ingredient}
                     </Badge>
                   ))}

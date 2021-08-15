@@ -1,9 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import recipeRatingSlice from './src/redux/recipeRatingSlice';
 import searchCacheSlice from './src/redux/searchCacheSlice';
 
 export const store = configureStore({
   reducer: {
     searchCache: searchCacheSlice,
+    recipeRating: recipeRatingSlice,
   },
 });
 

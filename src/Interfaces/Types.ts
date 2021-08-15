@@ -5,6 +5,7 @@ export type Recipe = {
   strMeal: string;
   strMealThumb: string;
   strInstructions: string;
+  strTags: string;
 };
 
 export enum SearchType {

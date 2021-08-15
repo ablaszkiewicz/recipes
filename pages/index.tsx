@@ -31,7 +31,8 @@ export default function Home() {
   const submitSearch = async (searchData: SearchData, completedCallback: () => void) => {
     setResultRecipies([]);
     let returnData;
-
+    let data;
+    let dataJson;
     switch (+searchData.searchType) {
       case SearchType.Dish:
         if (!searchData.searchBox || searchData.searchBox?.length == 0) {
@@ -41,8 +42,13 @@ export default function Home() {
 
           return;
         }
-        const data = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + searchData.searchBox);
-        const dataJson = await data.json();
+        data = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + searchData.searchBox);
+        dataJson = await data.json();
+        returnData = dataJson.meals;
+        break;
+      case SearchType.Country:
+        data = await fetch('https://www.themealdb.com/api/json/v1/1/filter.php?a=' + searchData.country);
+        dataJson = await data.json();
         returnData = dataJson.meals;
         break;
     }
