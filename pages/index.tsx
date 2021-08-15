@@ -7,7 +7,7 @@ import SearchArea from '../src/SearchArea';
 import ResultsArea from '../src/ResultsArea';
 import { Recipe, SearchData, SearchType } from '../src/Interfaces/Types';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { selectCachedRecipes, setCachedRecipes } from '../src/redux/cachedRecipesSlice';
+import { selectCachedRecipes, setCachedRecipes } from '../src/redux/searchCacheSlice';
 
 export default function Home() {
   const [resultRecipes, setResultRecipies] = useState<Recipe[]>([]);
@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   const showCachedSerachResults = () => {
-    if (cachedRecipes != []) {
+    if (cachedRecipes.length != 0) {
       setResultRecipies(cachedRecipes);
       setDidInitialSearch(true);
     }

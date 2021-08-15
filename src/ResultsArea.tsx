@@ -34,7 +34,11 @@ export default function ResultsArea({ recipes, showEmpty }: ResultsAreaProps) {
 
       <AnimatePresence>
         {showEmpty && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1, ease: 'easeOut', duration: 0.5 } }}
+            exit={{ opacity: 0 }}
+          >
             <Center h='0'>
               <Text fontSize='2xl' mt='10' fontWeight='100'>
                 Search for something

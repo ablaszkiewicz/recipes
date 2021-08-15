@@ -21,7 +21,7 @@ import { Recipe } from '../../src/Interfaces/Types';
 export default function Product() {
   const router = useRouter();
   const { id } = router.query;
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState<boolean>(false);
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [ingredients, setIngredients] = useState<string[] | undefined>();
 
@@ -141,7 +141,7 @@ export default function Product() {
                       size='lg'
                     >
                       <motion.div key={liked ? 1 : 0} initial={{ y: 20 }} animate={{ y: 0 }}>
-                        {liked ? 'Like!' : 'Unlike'}
+                        {liked ? 'Unlike' : 'Like'}
                       </motion.div>
                     </Button>
                   </motion.div>
