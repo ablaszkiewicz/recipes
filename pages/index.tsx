@@ -6,14 +6,27 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 import SearchArea from '../src/SearchArea';
 import ResultsArea from '../src/ResultsArea';
 import { Recipe, SearchData, SearchType } from '../src/Interfaces/Types';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { selectCachedRecipes, setCachedRecipes } from '../src/redux/cachedRecipesSlice';
 
 export default function Home() {
   const [resultRecipes, setResultRecipies] = useState<Recipe[]>([]);
   const [didInitialSearch, setDidInitialSearch] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+  const cachedRecipes = useAppSelector(selectCachedRecipes);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    showCachedSerachResults();
   }, []);
+
+  const showCachedSerachResults = () => {
+    if (cachedRecipes != []) {
+      setResultRecipies(cachedRecipes);
+      setDidInitialSearch(true);
+    }
+  };
 
   const submitSearch = async (searchData: SearchData, completedCallback: () => void) => {
     setResultRecipies([]);
@@ -35,6 +48,7 @@ export default function Home() {
     }
 
     setResultRecipies(returnData);
+    dispatch(setCachedRecipes(returnData));
     completedCallback();
     setDidInitialSearch(true);
   };

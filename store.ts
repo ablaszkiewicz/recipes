@@ -1,9 +1,9 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import counterSlice from './src/redux/counterSlice';
+import cachedRecipesSlice from './src/redux/cachedRecipesSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice,
+    cachedRecipes: cachedRecipesSlice,
   },
 });
 

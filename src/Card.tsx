@@ -41,15 +41,7 @@ export default function Card({ recipe }: CardProps) {
           textAlign={'center'}
           cursor={'pointer'}
         >
-          <Avatar
-            size={'xl'}
-            src={
-              'https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
-            }
-            alt={'Avatar Alt'}
-            mb={4}
-            pos={'relative'}
-          />
+          <Avatar size={'xl'} src={recipe.strMealThumb} alt={'Avatar Alt'} mb={4} pos={'relative'} />
           <Heading fontSize={'3xl'} fontFamily={'body'} noOfLines={1}>
             {recipe.strMeal}
           </Heading>
