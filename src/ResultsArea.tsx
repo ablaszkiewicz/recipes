@@ -57,7 +57,7 @@ export default function ResultsArea({ recipes, showEmpty }: ResultsAreaProps) {
           <motion.div variants={containerVariants} initial='hidden' animate='show'>
             <SimpleGrid columns={[1, 2, 3]} spacing='40px' overflow='none'>
               {recipes?.map((recipe) => (
-                <Card recipe={recipe} />
+                <Card recipe={recipe} key={recipe.idMeal} />
               ))}
             </SimpleGrid>
           </motion.div>

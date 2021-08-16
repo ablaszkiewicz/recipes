@@ -117,7 +117,7 @@ export default function Product() {
                     transition={{ ease: 'easeOut', duration: 0.3, delay: 0.1 }}
                   >
                     {tags.map((tag) => (
-                      <Badge fontSize='lg' px='2' mx='4'>
+                      <Badge fontSize='lg' px='2' mx='4' key={tag}>
                         #{tag}
                       </Badge>
                     ))}
@@ -179,7 +179,7 @@ export default function Product() {
                 </Text>
                 <UnorderedList>
                   {ingredients?.map((ingredient) => (
-                    <Badge fontSize='lg' m='2' px='2'>
+                    <Badge fontSize='lg' m='2' px='2' key={ingredient}>
                       {ingredient}
                     </Badge>
                   ))}
