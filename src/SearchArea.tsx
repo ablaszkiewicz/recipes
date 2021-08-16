@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Card from '../src/Card';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import { SearchData, SearchType } from './Interfaces/Types';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { selectCachedSearchBox, setCachedSearchBox } from './redux/searchCacheSlice';
 
 interface SearchAreaProps {
   submitSearch(searchData: SearchData, completedCallback: () => void): void;
@@ -14,8 +16,18 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
   const [searchBox, setSearchBox] = useState<string>('');
   const [country, setCountry] = useState<string>('');
   const [ingredient, setIngredient] = useState<string>('');
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
-  const [showLoading, setShowLoading] = useState(false);
+  const cachedSearchbox = useAppSelector(selectCachedSearchBox);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    retrieveCachedData();
+  }, []);
+
+  const retrieveCachedData = () => {
+    setSearchBox(cachedSearchbox);
+  };
 
   const searchClicked = () => {
     let data: SearchData = {
@@ -28,6 +40,7 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
     searchAreaProps.submitSearch(data, hideLoadingAnimation);
 
     setShowLoading(true);
+    dispatch(setCachedSearchBox(searchBox));
   };
 
   const hideLoadingAnimation = () => {
@@ -65,7 +78,7 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
             )}
             {searchType == SearchType.Country && (
               <Select value={country} onChange={(e) => setCountry(e.target.value)}>
-                <option value='poland'>Poland</option>
+                <option value='Canadian'>Canadian</option>
                 <option value='england'>England</option>
                 <option value='france'>France</option>
               </Select>
