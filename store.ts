@@ -27,13 +27,12 @@ const reducers = combineReducers({
   recipeRating: recipeRatingSlice,
 });
 
-const _persistedReducer = persistReducer<any, any>(persistConfig, reducers);
+const persistedReducer = persistReducer<any, any>(persistConfig, reducers);
 
 const store = configureStore({
-  reducer: _persistedReducer,
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware({
     serializableCheck: {
-      /* ignore persistance actions */
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
