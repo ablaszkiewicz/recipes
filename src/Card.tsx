@@ -23,7 +23,7 @@ export default function Card({ recipe }: CardProps) {
       key={recipe.strMeal}
       variants={itemVariants}
       whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 1 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() =>
         router.push(
           {
