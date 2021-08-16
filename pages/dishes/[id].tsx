@@ -81,7 +81,7 @@ export default function Product({ recipeProp, num }: RecipePageProps) {
       <SimpleGrid h={'100vh'} columns={[1, 2]}>
         <GridItem gridRow={[1, 1]} my={[5, 0]}>
           <Container maxW='3xl'>
-            <Center h={[null, '100vh']}>
+            <Center h={['50vh', '100vh']}>
               <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -94,7 +94,7 @@ export default function Product({ recipeProp, num }: RecipePageProps) {
         </GridItem>
         <GridItem my={[5, 0]}>
           <Container maxW='3xl'>
-            <Center h={[null, '100vh']}>
+            <Center h={['50vh', '100vh']}>
               <VStack spacing='5'>
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
