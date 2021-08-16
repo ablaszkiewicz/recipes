@@ -19,53 +19,49 @@ import { Recipe } from '../../src/Interfaces/Types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addLikedRecipe, removeLikedRecipe, selectLikedRecipes } from '../../src/redux/recipeRatingSlice';
 
-export default function Product() {
+interface RecipePageProps {
+  recipeProp: Recipe;
+  num: number;
+}
+
+export default function Product({ recipeProp, num }: RecipePageProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = router.query;
   const [liked, setLiked] = useState<boolean>(false);
-  const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [ingredients, setIngredients] = useState<string[] | undefined>();
   const [tags, setTags] = useState<string[] | undefined>();
   const likedIds = useAppSelector(selectLikedRecipes);
 
   useEffect(() => {
-    console.log('id is ' + id);
-    fetchRecipeDetails();
+    setupRecipeDetails();
     window.scrollTo(0, 0);
   }, []);
 
-  async function fetchRecipeDetails() {
-    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-    const data = await response.json();
-
-    const recipeTemp: Recipe = data.meals[0];
-    const keys = Object.keys(recipeTemp).filter((key) => key.startsWith('strIngredient'));
+  async function setupRecipeDetails() {
+    const keys = Object.keys(recipeProp).filter((key) => key.startsWith('strIngredient'));
     const ingredientsTemp: string[] = Array();
 
     for (let key in keys) {
-      const ingredient = data.meals[0][keys[key]];
+      const ingredient = (recipeProp as any)[keys[key]];
       if (ingredient == '') break;
       else ingredientsTemp.push(ingredient);
     }
 
-    if (recipeTemp.strTags) {
-      setTags(recipeTemp.strTags.split(','));
+    if (recipeProp.strTags) {
+      setTags(recipeProp.strTags.split(','));
     }
 
-    console.log(ingredientsTemp);
-
-    setRecipe(recipeTemp);
     setIngredients(ingredientsTemp);
-    setLiked(likedIds.includes(+recipeTemp.idMeal));
+    setLiked(likedIds.includes(+recipeProp.idMeal));
   }
 
   const likeClicked = () => {
     setLiked(!liked);
-    if (recipe && !liked) {
-      dispatch(addLikedRecipe(+recipe.idMeal));
-    } else if (recipe && liked) {
-      dispatch(removeLikedRecipe(+recipe.idMeal));
+    if (!liked) {
+      dispatch(addLikedRecipe(+recipeProp.idMeal));
+    } else if (liked) {
+      dispatch(removeLikedRecipe(+recipeProp.idMeal));
     }
   };
 
@@ -91,7 +87,7 @@ export default function Product() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ ease: 'easeOut', duration: 0.3, delay: 0.2 }}
               >
-                <Image objectFit='cover' src={recipe?.strMealThumb} />
+                <Image objectFit='cover' src={recipeProp.strMealThumb} />
               </motion.div>
             </Center>
           </Container>
@@ -106,7 +102,7 @@ export default function Product() {
                   transition={{ ease: 'easeOut', duration: 0.3, delay: 0 }}
                 >
                   <Text fontFamily={'Lato'} fontSize={['4xl', '5xl']}>
-                    {recipe?.strMeal}
+                    {recipeProp.strMeal}
                   </Text>
                 </motion.div>
 
@@ -129,7 +125,7 @@ export default function Product() {
                   transition={{ ease: 'easeOut', duration: 0.3, delay: 0.2 }}
                 >
                   <Text fontSize='xl' fontWeight='bold'>
-                    {recipe?.strCategory}
+                    {recipeProp.strCategory}
                   </Text>
                 </motion.div>
                 <HStack>
@@ -195,7 +191,7 @@ export default function Product() {
                 <Text fontFamily={'Lato'} fontSize={['4xl', '5xl']}>
                   Instructions
                 </Text>
-                <Text fontSize='lg'>{recipe?.strInstructions}</Text>
+                <Text fontSize='lg'>{recipeProp.strInstructions}</Text>
               </VStack>
             </Center>
           </Container>
@@ -205,8 +201,14 @@ export default function Product() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const id = context.params.id;
+
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+  const data = await response.json();
+  const recipeProp: Recipe = data.meals[0];
+
   return {
-    props: {},
+    props: { recipeProp },
   };
 }
