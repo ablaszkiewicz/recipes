@@ -7,9 +7,10 @@ import { Recipe } from './Interfaces/Types';
 interface ResultsAreaProps {
   showEmpty: boolean;
   recipes?: Recipe[];
+  customText?: string;
 }
 
-export default function ResultsArea({ recipes, showEmpty }: ResultsAreaProps) {
+export default function ResultsArea({ recipes, showEmpty, customText }: ResultsAreaProps) {
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -33,7 +34,7 @@ export default function ResultsArea({ recipes, showEmpty }: ResultsAreaProps) {
         transition={{ delay: 0.2, duration: 0.3, ease: 'easeOut' }}
       >
         <Text fontFamily={'Lato'} fontSize={'5xl'} mb={'5'}>
-          Results
+          Results {customText ? `for "${customText}"` : ''}
         </Text>
       </motion.div>
 

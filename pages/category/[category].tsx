@@ -1,16 +1,15 @@
-import { Container } from '@chakra-ui/react';
+import { Container, Text } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ResultsArea from '../../src/ResultsArea';
-import { useAppSelector } from '../../hooks';
-import { selectCachedRecipes } from '../../src/redux/searchCacheSlice';
 import { Recipe } from '../../src/Interfaces/Types';
 
 interface CategoryPageProps {
   recipesProp: Recipe[];
+  category: string;
 }
 
-export default function CategoryPage({ recipesProp }: CategoryPageProps) {
+export default function CategoryPage({ recipesProp, category }: CategoryPageProps) {
   return (
     <motion.div
       exit={{ opacity: 0 }}
@@ -19,7 +18,7 @@ export default function CategoryPage({ recipesProp }: CategoryPageProps) {
       transition={{ ease: 'easeOut', duration: 0.1 }}
     >
       <Container maxW={'5xl'}>
-        <ResultsArea recipes={recipesProp} showEmpty={false} />
+        <ResultsArea recipes={recipesProp} showEmpty={false} customText={category} />
       </Container>
     </motion.div>
   );
@@ -33,6 +32,6 @@ export async function getServerSideProps(context: any) {
   const recipesProp: Recipe = data.meals;
 
   return {
-    props: { recipesProp },
+    props: { recipesProp, category },
   };
 }

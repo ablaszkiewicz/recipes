@@ -133,7 +133,7 @@ export default function Product({ recipeProp }: RecipePageProps) {
                   }
                 >
                   <Text fontSize='xl' fontWeight='bold' cursor={'pointer'}>
-                    {recipeProp.strCategory}
+                    {recipeProp.strCategory} (click on me)
                   </Text>
                 </motion.div>
                 <HStack>
