@@ -22,13 +22,11 @@ import { addLikedRecipe, removeLikedRecipe, selectLikedRecipes } from '../../src
 
 interface RecipePageProps {
   recipeProp: Recipe;
-  num: number;
 }
 
-export default function Product({ recipeProp, num }: RecipePageProps) {
+export default function Product({ recipeProp }: RecipePageProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { id } = router.query;
   const [liked, setLiked] = useState<boolean>(false);
   const [ingredients, setIngredients] = useState<string[] | undefined>();
   const [tags, setTags] = useState<string[] | undefined>();
@@ -80,7 +78,7 @@ export default function Product({ recipeProp, num }: RecipePageProps) {
       </Head>
 
       <SimpleGrid h={'100vh'} columns={[1, 2]}>
-        <GridItem gridRow={[1, 1]} my={[5, 0]}>
+        <GridItem gridRow={[1, 1]} my={[10, 0]}>
           <Container maxW='3xl'>
             <Center h={['40vh', '100vh']}>
               <motion.div
@@ -124,8 +122,17 @@ export default function Product({ recipeProp, num }: RecipePageProps) {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ ease: 'easeOut', duration: 0.3, delay: 0.2 }}
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: `/category/${recipeProp.strCategory}`,
+                      },
+                      undefined,
+                      { scroll: false }
+                    )
+                  }
                 >
-                  <Text fontSize='xl' fontWeight='bold'>
+                  <Text fontSize='xl' fontWeight='bold' cursor={'pointer'}>
                     {recipeProp.strCategory}
                   </Text>
                 </motion.div>

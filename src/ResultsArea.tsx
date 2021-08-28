@@ -20,6 +20,11 @@ export default function ResultsArea({ recipes, showEmpty }: ResultsAreaProps) {
     },
   };
 
+  useEffect(() => {
+    console.log('new recipes are:');
+    console.log(recipes);
+  }, []);
+
   return (
     <motion.div>
       <motion.div

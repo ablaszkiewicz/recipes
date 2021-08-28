@@ -27,7 +27,7 @@ export default function Card({ recipe }: CardProps) {
       onClick={() =>
         router.push(
           {
-            pathname: `dishes/${recipe.idMeal}`,
+            pathname: `/recipes/${recipe.idMeal}`,
           },
           undefined,
           { scroll: false }
@@ -55,13 +55,15 @@ export default function Card({ recipe }: CardProps) {
             {recipe.strMeal}
           </Heading>
           <Text fontSize={'xl'} fontWeight={600} color={'gray.500'} mb={4}>
-            Italian
+            {recipe.strArea}
           </Text>
 
           <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
-            <Badge px={2} py={1} bg={useColorModeValue('gray.50', 'gray.800')} fontWeight={'400'} fontSize={'md'}>
-              #vegetarian
-            </Badge>
+            {recipe.strCategory && (
+              <Badge px={2} py={1} bg={useColorModeValue('gray.50', 'gray.800')} fontWeight={'400'} fontSize={'md'}>
+                #{recipe.strCategory}
+              </Badge>
+            )}
           </Stack>
         </Box>
       </Center>
