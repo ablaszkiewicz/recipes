@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { Recipe } from '../../src/Interfaces/Types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addLikedRecipe, removeLikedRecipe, selectLikedRecipes } from '../../src/redux/recipeRatingSlice';
+import { ArrowForwardIcon, LinkIcon } from '@chakra-ui/icons';
 
 interface RecipePageProps {
   recipeProp: Recipe;
@@ -31,6 +32,7 @@ export default function Product({ recipeProp }: RecipePageProps) {
   const [ingredients, setIngredients] = useState<string[] | undefined>();
   const [tags, setTags] = useState<string[] | undefined>();
   const likedIds = useAppSelector(selectLikedRecipes);
+  const [categoryHovered, setCategoryHovered] = useState<boolean>(false);
 
   useEffect(() => {
     setupRecipeDetails();
@@ -64,6 +66,16 @@ export default function Product({ recipeProp }: RecipePageProps) {
     }
   };
 
+  const categoryTextVariants = {
+    clicked: { x: 0, scale: 1.2 },
+    show: { x: -7, transition: { ease: 'easeOut', duration: 0.2 } },
+  };
+
+  const categoryArrowVariants = {
+    clicked: { opacity: 0, x: -15 },
+    show: { x: 2, opacity: 1, transition: { ease: 'easeOut', duration: 0.2 } },
+  };
+
   return (
     <motion.div
       exit={{ opacity: 0 }}
@@ -71,12 +83,6 @@ export default function Product({ recipeProp }: RecipePageProps) {
       animate={{ opacity: 1 }}
       transition={{ ease: 'easeOut', duration: 0.1 }}
     >
-      <Head>
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
-        <link rel='preconnect' href='https://fonts.gstatic.com' />
-        <link href='https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap' rel='stylesheet' />
-      </Head>
-
       <SimpleGrid h={'100vh'} columns={[1, 2]}>
         <GridItem gridRow={[1, 1]} my={[10, 0]}>
           <Container maxW='3xl'>
@@ -121,6 +127,8 @@ export default function Product({ recipeProp }: RecipePageProps) {
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
+                  whileTap={'clicked'}
+                  whileHover={'show'}
                   transition={{ ease: 'easeOut', duration: 0.3, delay: 0.2 }}
                   onClick={() =>
                     router.push(
@@ -132,9 +140,20 @@ export default function Product({ recipeProp }: RecipePageProps) {
                     )
                   }
                 >
-                  <Text fontSize='xl' fontWeight='bold' cursor={'pointer'}>
-                    {recipeProp.strCategory} (click on me)
-                  </Text>
+                  <HStack>
+                    <motion.div variants={categoryTextVariants}>
+                      <Text fontSize='2xl' fontWeight='bold' cursor={'pointer'}>
+                        {recipeProp.strCategory}
+                      </Text>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: -15 }}
+                      variants={categoryArrowVariants}
+                      transition={{ ease: 'easeOut', duration: 0.1 }}
+                    >
+                      <ArrowForwardIcon h={5} w={5} />
+                    </motion.div>
+                  </HStack>
                 </motion.div>
                 <HStack>
                   <motion.div
