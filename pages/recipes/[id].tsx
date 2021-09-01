@@ -32,7 +32,6 @@ export default function Product({ recipeProp }: RecipePageProps) {
   const [ingredients, setIngredients] = useState<string[] | undefined>();
   const [tags, setTags] = useState<string[] | undefined>();
   const likedIds = useAppSelector(selectLikedRecipes);
-  const [categoryHovered, setCategoryHovered] = useState<boolean>(false);
 
   useEffect(() => {
     setupRecipeDetails();
