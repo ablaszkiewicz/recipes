@@ -66,7 +66,7 @@ export default function Product({ recipeProp }: RecipePageProps) {
   };
 
   const categoryTextVariants = {
-    clicked: { x: 0, scale: 1.2 },
+    clicked: { x: 0, scale: 1.1 },
     show: { x: -7, transition: { ease: 'easeOut', duration: 0.2 } },
   };
 
@@ -142,7 +142,7 @@ export default function Product({ recipeProp }: RecipePageProps) {
                   <HStack>
                     <motion.div variants={categoryTextVariants}>
                       <Text fontSize='2xl' fontWeight='bold' cursor={'pointer'}>
-                        {recipeProp.strCategory}
+                        {recipeProp.strCategory} (click me)
                       </Text>
                     </motion.div>
                     <motion.div

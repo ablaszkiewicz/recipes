@@ -14,7 +14,7 @@ interface SearchAreaProps {
 export default function SearchArea(searchAreaProps: SearchAreaProps) {
   const [searchType, setSearchType] = useState<SearchType>(SearchType.Dish);
   const [searchBox, setSearchBox] = useState<string>('');
-  const [country, setCountry] = useState<string>('');
+  const [country, setCountry] = useState<string>('Polish');
   const [ingredient, setIngredient] = useState<string>('');
   const [showLoading, setShowLoading] = useState<boolean>(false);
 
@@ -78,9 +78,13 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
             )}
             {searchType == SearchType.Country && (
               <Select value={country} onChange={(e) => setCountry(e.target.value)}>
+                <option value='Polish'>Polish</option>
                 <option value='Canadian'>Canadian</option>
-                <option value='england'>England</option>
-                <option value='france'>France</option>
+                <option value='American'>American</option>
+                <option value='British'>British</option>
+                <option value='Croatian'>Croatian</option>
+                <option value='Chinese'>Chinese</option>
+                <option value='Dutch'>Dutch</option>
               </Select>
             )}
             <Select
@@ -89,7 +93,7 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
               onChange={(e) => setSearchType(e.target.value as unknown as SearchType)}
             >
               <option value={SearchType.Dish}>Dish</option>
-              <option value={SearchType.Ingredient}>Ingredient</option>
+              {/* <option value={SearchType.Ingredient}>Ingredient</option> */}
               <option value={SearchType.Country}>Country</option>
             </Select>
             <Button minWidth={'80px'} onClick={() => searchClicked()} isLoading={showLoading}>
@@ -109,8 +113,8 @@ export default function SearchArea(searchAreaProps: SearchAreaProps) {
             <HStack>
               <Select>
                 <option value='all'>All</option>
-                <option value='liked'>Liked</option>
-                <option value='notLiked'>Not liked</option>
+                {/* <option value='liked'>Liked</option>
+                <option value='notLiked'>Not liked</option> */}
               </Select>
             </HStack>
           </motion.div>
